@@ -79,6 +79,21 @@ jobs:
                ### Información faltante
                Preguntas para el autor si el issue es ambiguo (omite la sección si no aplica).
 
+               Requisitos de formato (GitHub Flavored Markdown):
+               - Guarda el diagnóstico en el archivo diagnostico.md con la herramienta Write.
+               - El archivo debe contener Markdown puro: saltos de línea reales (nunca "\n" literales),
+                 sin sangría al inicio de las líneas (la sangría de 4+ espacios se renderiza como código)
+                 y sin envolver todo el contenido en un bloque ``` ni en comillas.
+               - Deja una línea en blanco antes y después de cada encabezado (##, ###), lista y bloque de código.
+               - Usa listas con "- " o "1. ", **negrita** para los campos, `código` en línea para
+                 archivos, funciones y líneas (p. ej. `game.js:120`, `clearLines()`), y bloques
+                 ```js ... ``` para fragmentos de código.
+               - Para que cada campo (**Tipo:**, **Prioridad sugerida:**, **Labels aplicados:**) quede
+                 en su propia línea, sepáralos con una línea en blanco o usa una lista.
+               - La primera línea debe ser exactamente <!-- claude-triage --> (comentario HTML invisible).
+               - Publica siempre leyendo el archivo (--body-file / body=@diagnostico.md), nunca pasando
+                 el texto inline en el comando, para no perder saltos de línea ni escapar caracteres.
+
             6. Publica el diagnóstico. Primero busca si ya existe un comentario de triaje:
                gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments --jq '.[] | select(.body | contains("<!-- claude-triage -->")) | .id'
                - Si existe, actualízalo (no crees otro):
