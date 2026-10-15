@@ -36,6 +36,12 @@
   --grid: #e3e6ee;
 }
 
+/* ---- Skins: sobrescriben fondo y rejilla de los canvas (ambos temas) ---- */
+:root[data-skin="neon"] {
+  --canvas-bg: #000000;
+  --canvas-grid: #121826;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -76,7 +82,7 @@ body {
 #board {
   display: block;
   border: 1px solid var(--border);
-  background: var(--board-bg);
+  background: var(--canvas-bg, var(--board-bg));
   border-radius: 4px;
   box-shadow: 0 0 40px var(--shadow);
 }
@@ -115,7 +121,7 @@ body {
 #hold-canvas {
   display: block;
   border: 1px solid var(--border);
-  background: var(--board-bg);
+  background: var(--canvas-bg, var(--board-bg));
   border-radius: 4px;
 }
 
@@ -230,4 +236,23 @@ kbd {
 
 .theme-toggle:hover {
   border-color: var(--accent);
+}
+
+/* ---- Selector de skin ---- */
+.skin-select {
+  width: 120px;
+  padding: 4px 6px;
+  background: var(--kbd-bg);
+  color: var(--text);
+  border: 1px solid var(--kbd-border);
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.skin-select:hover,
+.skin-select:focus {
+  border-color: var(--accent);
+  outline: none;
 }
