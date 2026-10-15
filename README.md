@@ -22,6 +22,7 @@ Implementación del clásico **Tetris** en JavaScript vanilla, usando HTML5 Canv
     - [2. `style.css`](#2-stylecss)
     - [3. `game.js`](#3-gamejs)
     - [Flujo del juego](#flujo-del-juego)
+  - [Tabla de records](#tabla-de-records)
   - [Tecnologías](#tecnologías)
   - [Estructura del proyecto](#estructura-del-proyecto)
   - [Personalización](#personalización)
@@ -42,6 +43,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Sistema de puntuación** clásico de Tetris (100 / 300 / 500 / 800 multiplicado por nivel).
 - **Niveles** que aumentan cada 10 líneas y aceleran la caída.
 - **Pausa** y **Game Over** con opción de reinicio.
+- **Tabla de records local** (top 5 con nombre del jugador), mejor combo y líneas máximas históricas, guardados en el navegador.
 
 ---
 
@@ -98,7 +100,7 @@ Define la estructura visual:
 
 - Un `<canvas id="board">` de **300 × 600** píxeles donde se renderiza el tablero.
 - Un panel lateral con `SCORE`, `LINES`, `LEVEL`, vista de la siguiente pieza y la lista de controles.
-- Un overlay para los estados **PAUSA** y **GAME OVER**.
+- Un overlay compartido para la **pantalla de inicio**, **PAUSA** y **GAME OVER**, con la tabla de records.
 
 ### 2. `style.css`
 
@@ -137,6 +139,19 @@ init()
 ```
 
 Cuando una pieza recién generada ya colisiona al aparecer (`spawn`), se dispara `endGame()` y se muestra el overlay de **Game Over**.
+
+---
+
+## Tabla de records
+
+Al cargar la página se muestra una **pantalla de inicio** con la tabla de records; la partida empieza al pulsar **Jugar**.
+
+- Se guardan las **5 mejores puntuaciones** en `localStorage` (clave `tetrisRecords`), cada una con nombre, puntos, líneas, mejor combo y fecha.
+- Al terminar la partida, si la puntuación entra en el top 5 aparece un campo para escribir el nombre (máx. 12 caracteres, por defecto «Jugador»). Se guarda con **Guardar** o con `Enter`, y la fila nueva queda resaltada. Si se pulsa **Reiniciar** sin guardar, el record se guarda con el nombre escrito. Si supera al primer puesto se indica **¡Nuevo récord!**.
+- **Combo**: número de piezas seguidas que eliminan al menos una línea; se reinicia al fijar una pieza sin limpiar líneas.
+- El **mejor combo** y las **líneas máximas** se guardan como récords históricos aparte, aunque esa partida no entre en el top 5.
+- El botón **Borrar records** (en inicio y en Game Over) elimina todo tras pedir confirmación.
+- Mientras se escribe el nombre, el teclado no controla el juego.
 
 ---
 
