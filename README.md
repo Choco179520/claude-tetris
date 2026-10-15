@@ -25,6 +25,7 @@ Implementación del clásico **Tetris** en JavaScript vanilla, usando HTML5 Canv
   - [Tecnologías](#tecnologías)
   - [Estructura del proyecto](#estructura-del-proyecto)
   - [Personalización](#personalización)
+  - [Skins](#skins)
   - [Licencia](#licencia)
 
 ---
@@ -42,6 +43,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Sistema de puntuación** clásico de Tetris (100 / 300 / 500 / 800 multiplicado por nivel).
 - **Niveles** que aumentan cada 10 líneas y aceleran la caída.
 - **Pausa** y **Game Over** con opción de reinicio.
+- **Skins visuales** seleccionables desde el panel lateral (ver [Skins](#skins)).
 
 ---
 
@@ -173,11 +175,28 @@ Algunos parámetros fáciles de tunear en `game.js`:
 | `COLS`         | Columnas del tablero                     | `10`                  |
 | `ROWS`         | Filas del tablero                        | `20`                  |
 | `BLOCK`        | Tamaño en píxeles de cada celda          | `30`                  |
-| `COLORS`       | Paleta de colores por tipo de pieza      | 7 colores             |
+| `SKINS`        | Paletas y estilos de dibujo de bloques   | 4 skins               |
 | `LINE_SCORES`  | Puntos por 1, 2, 3 o 4 líneas eliminadas | `[0,100,300,500,800]` |
 | `dropInterval` | Velocidad inicial de caída en ms         | `1000`                |
 
 > Si cambias `COLS`, `ROWS` o `BLOCK`, recuerda ajustar también `width` y `height` del `<canvas id="board">` en `index.html` para que coincida (`COLS × BLOCK` × `ROWS × BLOCK`).
+
+---
+
+## Skins
+
+El selector **SKIN** del panel lateral cambia la apariencia completa de las piezas sin recargar la página (incluso en pausa o tras el Game Over):
+
+| Skin          | Aspecto                                                                       |
+| ------------- | ----------------------------------------------------------------------------- |
+| **Retro**     | Bloques cuadrados con colores planos (estilo original). Por defecto.          |
+| **Neon**      | Fondo negro y contornos con brillo (`shadowBlur` del canvas).                 |
+| **Pastel**    | Colores suaves y bordes redondeados (`roundRect`, con _fallback_ a `arcTo`).  |
+| **Pixel art** | Textura de píxeles sobre cada bloque, con bisel claro y oscuro.               |
+
+La skin elegida se guarda en `localStorage` (clave `skin`) y se restaura al volver a abrir el juego.
+
+En `game.js`, cada entrada de `SKINS` define su paleta `colors` (índice 0 vacío, 1–7 alineados con `PIECES`) y una función `draw`; `drawBlock()` delega en la skin activa. El fondo y la rejilla del canvas se pueden sobrescribir por skin en `style.css` con `:root[data-skin="…"]` (`--canvas-bg`, `--canvas-grid`); si no se definen, se usan los del tema claro/oscuro.
 
 ---
 
